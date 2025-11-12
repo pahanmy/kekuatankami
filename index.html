@@ -2,10 +2,8 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
-    <!-- Tajuk Laman Web dikemaskini -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPARK-TAPAK KEKUATAN KAMI - PPD Miri</title>
-    <!-- Memuatkan Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Menggunakan fon Inter */
@@ -39,10 +37,8 @@
 </head>
 <body class="bg-gray-100 font-inter text-gray-800">
 
-    <!-- Halaman Log Masuk (Baru) -->
     <div id="login-page" class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-800 to-blue-600 p-4">
         <div class="bg-white p-8 sm:p-12 rounded-xl shadow-2xl w-full max-w-md text-center">
-            <!--  -->
             <h1 class="text-3xl font-bold text-gray-800 mb-2">SPARK-TAPAK KEKUATAN KAMI</h1>
             <p class="text-base text-gray-500 mb-6">Sistem Pelaporan dan Analisis Pejabat Pendidikan Daerah Miri</p>
             
@@ -59,10 +55,8 @@
         </div>
     </div>
 
-    <!-- Aplikasi Utama (Disembunyikan pada mulanya) -->
     <div id="main-app" class="hidden">
 
-        <!-- Header Utama (Dikemaskini) -->
         <header class="bg-blue-800 text-white shadow-md">
             <div class="container mx-auto px-4 py-6 flex flex-wrap justify-between items-center">
                 <div>
@@ -72,7 +66,6 @@
                 <div class="text-right mt-4 sm:mt-0">
                     <p class="text-sm text-blue-300">Log Masuk Sebagai:</p>
                     <p id="logged-in-school" class="text-lg font-semibold"></p>
-                    <!-- BUTANG BARU UNTUK MOD PENYELARAS -->
                     <button id="penyelaras-toggle" class="mt-2 text-xs bg-yellow-400 text-gray-800 font-bold py-1 px-3 rounded-full hover:bg-yellow-300 transition duration-300">
                         Aktifkan Mod Penyelaras
                     </button>
@@ -80,11 +73,9 @@
             </div>
         </header>
 
-        <!-- Navigasi -->
         <nav class="bg-gray-700 text-white sticky top-0 z-50 shadow-lg">
             <div class="container mx-auto px-4">
                 <ul class="flex flex-wrap justify-center sm:justify-start">
-                    <!-- Pautan navigasi yang memanggil fungsi showPage() -->
                     <li><a href="#muka-depan" onclick="showPage('muka-depan')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Muka Depan</a></li>
                     <li><a href="#aspek4" onclick="showPage('aspek4')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A4</a></li>
                     <li><a href="#aspek5" onclick="showPage('aspek5')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A5</a></li>
@@ -92,51 +83,41 @@
                     <li><a href="#aspek7" onclick="showPage('aspek7')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A7</a></li>
                     <li><a href="#aspek8" onclick="showPage('aspek8')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A8</a></li>
                     <li><a href="#aspek9" onclick="showPage('aspek9')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A9</a></li>
-                    <!-- PAUTAN BARU DITAMBAH -->
                     <li><a href="#keseluruhan" onclick="showPage('keseluruhan')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Keseluruhan</a></li>
                 </ul>
             </div>
         </nav>
 
-        <!-- Kandungan Utama -->
         <main class="container mx-auto p-4 md:p-6">
 
-            <!-- Halaman: Muka Depan -->
             <div id="muka-depan" class="page-content active">
                 <div class="bg-white p-8 rounded-lg shadow-md text-center">
                     <h2 class="text-4xl font-bold text-blue-700 mb-4">TAPAK KEKUATAN KAMI</h2>
                     <p class="text-2xl text-gray-600 mb-8">TAHUN 2024</p>
                     <div class="text-lg space-y-2">
-                        <!-- **** PERUBAHAN DI SINI **** -->
-                        <!-- data-id ditambah pada tag strong untuk disasarkan oleh JavaScript -->
                         <p><strong>NAMA SEKOLAH:</strong> <strong data-id="nama-sekolah" class="font-normal">SJKC CHUNG HUA BAKAM</strong></p>
                         <p><strong>KOD SEKOLAH:</strong> <strong data-id="kod-sekolah" class="font-normal">YCC4105</strong></p>
-                        <!-- **** TAMAT PERUBAHAN **** -->
-                    </div>
+                        </div>
                     <p class="mt-8 text-gray-500">Selamat datang ke laman SPARK. Sila gunakan menu navigasi di atas untuk meneroka setiap aspek.</p>
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A4 -->
             <div id="aspek4" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
-                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek4-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA AKADEMIK</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
@@ -207,26 +188,22 @@
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A5 -->
             <div id="aspek5" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
-                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek5-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
@@ -257,26 +234,22 @@
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A6 -->
             <div id="aspek6" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
-                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek6-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA HAL EHWAL MURID</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
@@ -339,25 +312,21 @@
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A7 -->
             <div id="aspek7" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
-                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek7-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
@@ -379,27 +348,23 @@
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A8 -->
             <div id="aspek8" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A8: ASRAMA</h2>
-                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek8-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA ASRAMA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <tr>
-                                    <!-- Tiada input di sini kerana tiada data -->
                                     <td colspan="6" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
                                 </tr>
                             </tbody>
@@ -408,15 +373,12 @@
                 </div>
             </div>
 
-            <!-- Halaman: Aspek A9 -->
             <div id="aspek9" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A9: SOKONGAN IBU BAPA/PENJAGA, KOMUNITI DAN PIHAK SWASTA</h2>
                     
-                    <!-- Jadual 1: Program Melibatkan Ibu Bapa -->
                     <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <!-- TAMBAH ID JADUAL -->
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-1">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -425,12 +387,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Mesyuarat Agung PIBG</td>
@@ -459,10 +419,8 @@
                         </table>
                     </div>
 
-                    <!-- Jadual 2: Pelibatan Ibu Bapa dalam PIBKS -->
                     <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <!-- TAMBAH ID JADUAL -->
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-2">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -470,12 +428,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
@@ -494,10 +450,8 @@
                         </table>
                     </div>
 
-                    <!-- Jadual 3: Pelibatan Komuniti dan Pihak Swasta -->
                     <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <!-- TAMBAH ID JADUAL -->
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-3">
                             <thead class="bg-gray-100">
                                 <tr>
@@ -505,12 +459,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
@@ -532,13 +484,11 @@
                 </div>
             </div>
 
-            <!-- HALAMAN BARU: KESELURUHAN (GABUNGAN) -->
             <div id="keseluruhan" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-3xl font-bold mb-2 text-gray-800">Ringkasan Keseluruhan</h2>
                     <p class="text-lg text-gray-500 mb-8">Sila semak semua data di bawah sebelum membuat pengesahan. Halaman ini adalah untuk bacaan sahaja.</p>
 
-                    <!-- Salinan Aspek A4 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A4: PRASARANA AKADEMIK</h3>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200">
@@ -546,16 +496,13 @@
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA AKADEMIK</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A4-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
@@ -624,7 +571,6 @@
                         </table>
                     </div>
 
-                    <!-- Salinan Aspek A5 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h3>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200">
@@ -632,16 +578,13 @@
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A5-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
@@ -670,7 +613,6 @@
                         </table>
                     </div>
 
-                    <!-- Salinan Aspek A6 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A6: PRASARANA HAL EHWAL MURID</h3>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200">
@@ -678,16 +620,13 @@
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA HAL EHWAL MURID</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A6-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
@@ -748,7 +687,6 @@
                         </table>
                     </div>
 
-                    <!-- Salinan Aspek A7 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A7: PERSEKITARAN DIGITAL</h3>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200">
@@ -756,15 +694,12 @@
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A7-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
@@ -783,7 +718,6 @@
                         </table>
                     </div>
 
-                    <!-- Salinan Aspek A8 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A8: ASRAMA</h3>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200">
@@ -791,14 +725,12 @@
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA ASRAMA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
-                                    <!-- LAJUR BARU -->
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A8-body">
                                 <tr>
                                     <td colspan="6" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
@@ -807,7 +739,6 @@
                         </table>
                     </div>
 
-                    <!-- Salinan Aspek A9 -->
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A9: SOKONGAN IBU BAPA/PENJAGA, KOMUNITI DAN PIHAK SWASTA</h3>
                     
                     <h4 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h4>
@@ -820,13 +751,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-1-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Mesyuarat Agung PIBG</td>
@@ -864,13 +792,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-2-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
@@ -898,13 +823,10 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
-                                    <!-- LAJUR BARU -->
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <!-- TAMBAH ID TBODY -->
                             <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-3-body">
-                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
@@ -923,7 +845,6 @@
                         </table>
                     </div>
                     
-                    <!-- Bahagian Pengesahan (BARU) -->
                     <div id="submission-section" class="mt-12 pt-8 border-t-2 border-gray-300">
                         <h3 class="text-2xl font-bold mb-6 text-gray-700">Pengesahan dan Penghantaran</h3>
                         
@@ -954,16 +875,12 @@
 
         </main>
 
-        <!-- Footer -->
         <footer class="bg-gray-800 text-gray-300 text-center p-6 mt-8">
             <p>Projek Inovasi oleh Pahan</p>
             <p class="mt-1 text-gray-400 text-sm">Versi 1.1 (2025)</p>
         </footer>
     
-    </div> <!-- Tutup #main-app -->
-
-    <!-- Skrip JavaScript untuk navigasi DAN log masuk -->
-    <script>
+    </div> <script>
         // Fungsi untuk menukar halaman
         function showPage(pageId) {
             // Sembunyikan semua div kandungan halaman
