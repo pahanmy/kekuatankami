@@ -41,6 +41,62 @@
         const iconDelete = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>`;
         const iconPlus = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>`;
 
+        // --- FUNGSI MODAL (BARU) ---
+        window.currentAddFunction = null; // Store { addFunc: function, tableId: string }
+
+        function openModal(addFunctionName, tableId, itemType = 'Item') {
+            // Store the function to be called on save
+            window.currentAddFunction = { 
+                addFunc: window[addFunctionName], 
+                tableId: tableId 
+            };
+            
+            // Dapatkan elemen modal
+            const modal = document.getElementById('itemModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalInput = document.getElementById('modalInput');
+            const modalError = document.getElementById('modalError');
+
+            // Set tajuk & reset input
+            modalTitle.textContent = `Tambah ${itemType} Baru`;
+            modalInput.value = '';
+            modalInput.placeholder = `Masukkan nama ${itemType.toLowerCase()}...`
+            modalError.classList.add('hidden');
+            
+            // Tunjukkan modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex'); // Gunakan flex untuk memusatkan
+            modalInput.focus(); // Terus fokus pada input
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('itemModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            window.currentAddFunction = null; // Reset
+        }
+
+        function handleModalSave() {
+            const modalInput = document.getElementById('modalInput');
+            const modalError = document.getElementById('modalError');
+            const newName = modalInput.value.trim();
+
+            if (newName === "") {
+                modalError.classList.remove('hidden');
+                return;
+            }
+
+            // Panggil fungsi yang disimpan
+            if (window.currentAddFunction && typeof window.currentAddFunction.addFunc === 'function') {
+                window.currentAddFunction.addFunc(
+                    window.currentAddFunction.tableId, 
+                    newName
+                );
+            }
+
+            closeModal();
+        }
+
         // --- FUNGSI BANTUAN UNTUK CIPTA SEL ---
         
         // Cipta sel input (untuk data-col)
@@ -67,12 +123,11 @@
         }
 
         // --- FUNGSI TAMBAH BARIS (mengikut jenis jadual) ---
+        // *** DIKEMASKINI: Tidak lagi guna prompt(), terima 'newName' dari modal ***
 
         // Untuk Aspek A4, A5, A6, A8 (Prasarana)
-        // *** DIKEMASKINI untuk membuang baris "Tiada data" (cth: A8) ***
-        window.addPrasaranaRow = function(tableId) {
-            const newName = prompt("Masukkan nama prasarana baru:");
-            if (!newName || newName.trim() === "") return;
+        window.addPrasaranaRow = function(tableId, newName) {
+            if (!newName) return; // Pastikan nama ada
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
 
@@ -86,7 +141,7 @@
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td class="p-4"></td>
-                <td class="p-4">${newName.trim()}</td>
+                <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('number', 0, 'ada')}
                 ${createInputCell('number', 0, 'fungsi')}
                 ${createInputCell('number', 0, 'perlu')}
@@ -97,15 +152,14 @@
         }
 
         // Untuk Aspek A7 (Peranti Digital)
-        window.addPerantiRow = function(tableId) {
-            const newName = prompt("Masukkan nama peranti baru:");
-            if (!newName || newName.trim() === "") return;
+        window.addPerantiRow = function(tableId, newName) {
+            if (!newName) return;
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td class="p-4"></td>
-                <td class="p-4">${newName.trim()}</td>
+                <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('number', 0, 'ada')}
                 ${createInputCell('number', 0, 'fungsi')}
                 ${createCatatanCell('')}
@@ -115,15 +169,14 @@
         }
 
         // Untuk Aspek A9 - Jadual 1 (Program Ibu Bapa)
-        window.addA91Row = function(tableId) {
-            const newName = prompt("Masukkan nama program baru:");
-            if (!newName || newName.trim() === "") return;
+        window.addA91Row = function(tableId, newName) {
+            if (!newName) return;
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td class="p-4"></td>
-                <td class="p-4">${newName.trim()}</td>
+                <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('text', 0, 'hadir')}
                 ${createInputCell('text', 0, 'jumlah_ibubapa')}
                 ${createInputCell('text', '0%', 'peratus_hadir')}
@@ -134,15 +187,14 @@
         }
 
         // Untuk Aspek A9 - Jadual 2 & 3 (Pelibatan PIBKS)
-        window.addA923Row = function(tableId) {
-            const newName = prompt("Masukkan nama pelibatan baru:");
-            if (!newName || newName.trim() === "") return;
+        window.addA923Row = function(tableId, newName) {
+            if (!newName) return;
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td class="p-4"></td>
-                <td class="p-4">${newName.trim()}</td>
+                <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('number', 0, 'jumlah_terlibat')}
                 ${createInputCell('text', '0%', 'peratus_terlibat')}
                 ${createCatatanCell('')}
@@ -161,7 +213,7 @@
                 const headerRow = table.querySelector('thead tr');
                 if (headerRow) {
                     const th = document.createElement('th');
-                    th.className = "p-4 text-left text-sm font-semibold text-gray-600 uppercase";
+                    th.className = "p-4 text-left text-sm font-semibold text-gray-600 uppercase w-20"; // Lebar tetap
                     th.textContent = 'Tindakan';
                     headerRow.appendChild(th);
                 }
@@ -189,6 +241,12 @@
                         </button>
                     `;
                     row.appendChild(td);
+
+                    // *** BARU: Tambah kelas wrap pada sel senarai sedia ada ***
+                    const nameCell = row.querySelector('td:nth-child(2)');
+                    if (nameCell) {
+                        nameCell.classList.add('whitespace-normal', 'break-words');
+                    }
                 });
             });
         }
@@ -264,21 +322,21 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
-                        <button onclick="addPrasaranaRow('aspek4-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                        <button onclick="openModal('addPrasaranaRow', 'aspek4-table', 'Prasarana Akademik')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Baris
                         </button>
                     </div>
                     
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek4-table">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek4-table">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA AKADEMIK</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PRASARANA AKADEMIK</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                     </tr>
                             </thead>
@@ -357,21 +415,21 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
-                        <button onclick="addPrasaranaRow('aspek5-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                        <button onclick="openModal('addPrasaranaRow', 'aspek5-table', 'Prasarana Sukan')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Baris
                         </button>
                     </div>
                     
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek5-table">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek5-table">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -410,21 +468,21 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
-                        <button onclick="addPrasaranaRow('aspek6-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                        <button onclick="openModal('addPrasaranaRow', 'aspek6-table', 'Prasarana HEM')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Baris
                         </button>
                     </div>
 
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek6-table">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek6-table">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA HAL EHWAL MURID</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PRASARANA HAL EHWAL MURID</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -495,20 +553,20 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
-                        <button onclick="addPerantiRow('aspek7-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                        <button onclick="openModal('addPerantiRow', 'aspek7-table', 'Peranti')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Baris
                         </button>
                     </div>
 
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek7-table">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek7-table">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PERANTI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -538,21 +596,21 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-700">ASPEK A8: ASRAMA</h2>
-                        <button onclick="addPrasaranaRow('aspek8-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                        <button onclick="openModal('addPrasaranaRow', 'aspek8-table', 'Prasarana Asrama')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah Baris
                         </button>
                     </div>
 
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek8-table">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek8-table">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA ASRAMA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
-                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PRASARANA ASRAMA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -572,20 +630,20 @@
                     
                     <div class="flex justify-between items-center mt-6 mb-4">
                         <h3 class="text-xl font-semibold text-gray-600">Program Melibatkan Ibu Bapa</h3>
-                        <button onclick="addA91Row('aspek9-table-1')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                        <button onclick="openModal('addA91Row', 'aspek9-table-1', 'Program')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah
                         </button>
                     </div>
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-1">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek9-table-1">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PROGRAM</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">SENARAI PROGRAM</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">BILANGAN KEHADIRAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN IBU BAPA/PENJAGA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -620,19 +678,19 @@
 
                     <div class="flex justify-between items-center mt-8 mb-4">
                         <h3 class="text-xl font-semibold text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
-                        <button onclick="addA923Row('aspek9-table-2')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                        <button onclick="openModal('addA923Row', 'aspek9-table-2', 'Pelibatan')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah
                         </button>
                     </div>
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-2">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek9-table-2">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN IBU BAPA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% PENGLIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -657,19 +715,19 @@
 
                     <div class="flex justify-between items-center mt-8 mb-4">
                         <h3 class="text-xl font-semibold text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
-                        <button onclick="addA923Row('aspek9-table-3')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                        <button onclick="openModal('addA923Row', 'aspek9-table-3', 'Pelibatan')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                             Tambah
                         </button>
                     </div>
                     <div class="rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-3">
+                        <table class="w-full table-fixed divide-y divide-gray-200" id="aspek9-table-3">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-16">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-2/5">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% PENGLIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
@@ -702,7 +760,25 @@
             <p class="mt-1 text-gray-400 text-sm">Versi 1.1 (2025)</p>
         </footer>
     
-    </div> <script>
+    </div> <div id="itemModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 class="text-xl font-semibold mb-4" id="modalTitle">Tambah Item Baru</h3>
+            <label for="modalInput" class="block text-sm font-medium text-gray-700">Nama Item:</label>
+            <input type="text" id="modalInput" class="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <p id="modalError" class="text-red-600 text-sm mt-1 hidden">Nama tidak boleh kosong.</p>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button id="modalCancel" class="bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400 transition duration-300">
+                    Batal
+                </button>
+                <button id="modalSave" class="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition duration-300">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
         // Fungsi untuk menukar halaman
         function showPage(pageId) {
             // Sembunyikan semua div kandungan halaman
@@ -761,6 +837,7 @@
             if (!nameCell) return;
             
             const currentName = nameCell.textContent;
+            // Guna Modal untuk Edit juga
             const newName = prompt("Sila edit nama:", currentName);
 
             if (newName && newName.trim() !== "") {
@@ -781,7 +858,14 @@
             const row = buttonEl.closest('tr');
             const tableBody = row.parentNode; // Dapatkan <tbody>
             row.remove();
-            window.reindexTable(tableBody); // Panggil reindex
+            
+            // *** BARU: Jika tiada lagi baris, tambah balik baris "Tiada data" (Khas untuk A8) ***
+            if (tableBody.rows.length === 0 && tableBody.closest('table').id === 'aspek8-table') {
+                const newRow = tableBody.insertRow();
+                newRow.innerHTML = `<td colspan="7" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>`;
+            } else {
+                window.reindexTable(tableBody); // Panggil reindex jika bukan A8 yang kosong
+            }
         }
 
 
@@ -797,7 +881,6 @@
             const loggedInSchoolDisplay = document.getElementById('logged-in-school');
 
             // Kod sekolah yang sah (berdasarkan data anda)
-            // Anda boleh menambah lebih banyak kod dalam array ini: const validCodes = ['YCC4105', 'YCC4106'];
             const validCodes = {
                 'YCC4105': 'SJKC CHUNG HUA BAKAM'
                 // Tambah kod dan nama sekolah lain di sini
@@ -807,20 +890,15 @@
             function handleLogin() {
                 const enteredCode = schoolCodeInput.value.trim().toUpperCase();
                 
-                // Semak jika kod yang dimasukkan wujud dalam senarai validCodes
                 if (Object.keys(validCodes).includes(enteredCode)) {
                     // Berjaya
-                    loginPage.style.display = 'none'; // Sembunyikan halaman log masuk
-                    mainApp.classList.remove('hidden'); // Paparkan aplikasi utama
+                    loginPage.style.display = 'none'; 
+                    mainApp.classList.remove('hidden'); 
+                    mainApp.classList.add('flex'); // Pastikan flex ditambah pada main-app
                     
-                    // Paparkan kod sekolah yang log masuk di header
                     loggedInSchoolDisplay.textContent = `${enteredCode} (${validCodes[enteredCode]})`;
-
-                    // Tunjukkan halaman 'muka-depan' secara lalai selepas log masuk
                     showPage('muka-depan');
 
-                    // **** PERUBAHAN DI SINI ****
-                    // Memastikan elemen wujud sebelum menetapkan textContent
                     const namaSekolahElement = document.querySelector('#muka-depan strong[data-id="nama-sekolah"]');
                     const kodSekolahElement = document.querySelector('#muka-depan strong[data-id="kod-sekolah"]');
 
@@ -830,7 +908,6 @@
                     if (kodSekolahElement) {
                         kodSekolahElement.textContent = enteredCode;
                     }
-                    // **** TAMAT PERUBAHAN ****
 
                     // --- BARU: Sediakan jadual dinamik SELEPAS log masuk ---
                     if (window.setupDynamicTables) {
@@ -839,14 +916,11 @@
 
                 } else {
                     // Gagal
-                    loginError.classList.remove('hidden'); // Paparkan mesej ralat
+                    loginError.classList.remove('hidden'); 
                 }
             }
 
-            // Tambah 'event listener' pada butang log masuk
             loginButton.addEventListener('click', handleLogin);
-            
-            // Benarkan log masuk dengan menekan 'Enter'
             schoolCodeInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     handleLogin();
@@ -857,18 +931,13 @@
             const penyelarasButton = document.getElementById('penyelaras-toggle');
             if (penyelarasButton) {
                 penyelarasButton.addEventListener('click', () => {
-                    // Sasarkan SEMUA input catatan, termasuk yang ditambah secara dinamik
                     const inputs = document.querySelectorAll('.catatan-input'); 
                     const btn = document.getElementById('penyelaras-toggle');
                     
-                    // Semak status (kita andaikan semua sama)
                     let isCurrentlyDisabled = false;
-                    if (inputs.length > 0) {
-                        // Perlu cari satu input yang mungkin wujud
-                        const firstInput = document.querySelector('.catatan-input');
-                        if (firstInput) {
-                            isCurrentlyDisabled = firstInput.disabled;
-                        }
+                    const firstInput = document.querySelector('.catatan-input');
+                    if (firstInput) {
+                        isCurrentlyDisabled = firstInput.disabled;
                     }
                     
                     if (isCurrentlyDisabled) {
@@ -887,24 +956,37 @@
                 });
             }
 
+            // --- PENGENDALI MODAL (BARU) ---
+            const modalSaveButton = document.getElementById('modalSave');
+            const modalCancelButton = document.getElementById('modalCancel');
+            const modalInput = document.getElementById('modalInput');
+            const modal = document.getElementById('itemModal');
 
-            // --- LOGIK PENGESAHAN (DIBUANG DARI HALAMAN KESELURUHAN) ---
-            // Kod ini perlu dipindahkan ke halaman lain jika anda mahu fungsi hantar
-            /*
-            const submitButton = document.getElementById('submit-ppd-button');
-            const confirmCheckbox = document.getElementById('pengesahan-checkbox');
-            // ...
-            */
+            if(modalSaveButton) modalSaveButton.addEventListener('click', handleModalSave);
+            if(modalCancelButton) modalCancelButton.addEventListener('click', closeModal);
+            
+            // Tutup modal jika klik di luar
+            if(modal) modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Benarkan 'Enter' untuk simpan
+            if(modalInput) modalInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Elak form submit jika ada
+                    handleModalSave();
+                }
+            });
 
 
             // --- FUNGSI BARU UNTUK CATATAN ---
             
-            // Fungsi untuk mengemas kini warna teks berdasarkan input catatan
             window.updateRedText = function(inputEl) {
                 if (!inputEl) return;
                 const row = inputEl.closest('tr');
                 if (!row) return;
-                // Sasarkan sel kedua (Senarai Prasarana)
                 const itemCell = row.querySelector('td:nth-child(2)');
                 if (itemCell) {
                     if (inputEl.value.trim() !== '') {
@@ -915,22 +997,14 @@
                 }
             };
 
-            // --- FUNGSI populateKeseluruhan DIBUANG ---
+            // --- LOGIK NAVIGASI LAMA ---
 
-
-            // --- LOGIK NAVIGASI LAMA (Kini hanya berfungsi selepas log masuk) ---
-
-            // Juga uruskan jika pengguna menavigasi menggunakan butang 'back'/'forward' pelayar
             window.onhashchange = () => {
                 const pageId = window.location.hash.substring(1) || 'muka-de';
                 showPage(pageId);
             };
 
-            // Semak jika ada hash semasa muat halaman (cth: jika pautan dikongsi)
-            // Ini tidak akan berfungsi sehingga selepas log masuk, tetapi ia ditetapkan untuk masa depan
             const initialPageId = window.location.hash.substring(1) || 'muka-depan';
-            // Tunjukkan halaman 'muka-depan' secara lalai (dilaraskan daripada kod asal)
-            // showPage('muka-depan') akan dipanggil selepas log masuk berjaya
         });
     </script>
 
