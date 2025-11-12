@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <!-- Tajuk Laman Web dikemaskini -->
+    <title>SPARK-TAPAK KEKUATAN KAMI - PPD Miri</title>
+    <!-- Memuatkan Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Menggunakan fon Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Kelas untuk menyembunyikan halaman yang tidak aktif */
+        .page-content {
+            display: none;
+        }
+        /* Kelas untuk memaparkan halaman yang aktif */
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        /* Kelas untuk pautan navigasi yang aktif */
+        .nav-link.active {
+            background-color: #f59e0b; /* Warna kuning (amber-500) */
+            color: #1f2937; /* Warna kelabu (gray-800) */
+        }
+        
+        /* Animasi Fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Memastikan fon Inter dimuatkan */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    </style>
+</head>
+<body class="bg-gray-100 font-inter text-gray-800">
+
+    <!-- Halaman Log Masuk (Baru) -->
+    <div id="login-page" class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-800 to-blue-600 p-4">
+        <div class="bg-white p-8 sm:p-12 rounded-xl shadow-2xl w-full max-w-md text-center">
+            <!--  -->
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">SPARK-TAPAK KEKUATAN KAMI</h1>
+            <p class="text-base text-gray-500 mb-6">Sistem Pelaporan dan Analisis Pejabat Pendidikan Daerah Miri</p>
+            
+            <div class="mb-4">
+                <label for="school-code" class="sr-only">Kod Sekolah</label>
+                <input type="text" id="school-code" placeholder="Masukkan Kod Sekolah Anda" class="w-full p-4 border border-gray-300 rounded-lg text-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            
+            <button id="login-button" class="w-full bg-blue-700 text-white p-4 rounded-lg text-lg font-semibold hover:bg-blue-800 transition duration-300 shadow-md">
+                Log Masuk
+            </button>
+            
+            <p id="login-error" class="text-red-600 text-sm mt-4 hidden">Kod sekolah tidak sah. Sila cuba lagi.</p>
+        </div>
+    </div>
+
+    <!-- Aplikasi Utama (Disembunyikan pada mulanya) -->
+    <div id="main-app" class="hidden">
+
+        <!-- Header Utama (Dikemaskini) -->
+        <header class="bg-blue-800 text-white shadow-md">
+            <div class="container mx-auto px-4 py-6 flex flex-wrap justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">SPARK-TAPAK KEKUATAN KAMI</h1>
+                    <p class="text-lg text-blue-200">Sistem Pelaporan dan Analisis Pejabat Pendidikan Daerah Miri</p>
+                </div>
+                <div class="text-right mt-4 sm:mt-0">
+                    <p class="text-sm text-blue-300">Log Masuk Sebagai:</p>
+                    <p id="logged-in-school" class="text-lg font-semibold"></p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigasi -->
+        <nav class="bg-gray-700 text-white sticky top-0 z-50 shadow-lg">
+            <div class="container mx-auto px-4">
+                <ul class="flex flex-wrap justify-center sm:justify-start">
+                    <!-- Pautan navigasi yang memanggil fungsi showPage() -->
+                    <li><a href="#muka-depan" onclick="showPage('muka-depan')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Muka Depan</a></li>
+                    <li><a href="#aspek4" onclick="showPage('aspek4')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A4</a></li>
+                    <li><a href="#aspek5" onclick="showPage('aspek5')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A5</a></li>
+                    <li><a href="#aspek6" onclick="showPage('aspek6')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A6</a></li>
+                    <li><a href="#aspek7" onclick="showPage('aspek7')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A7</a></li>
+                    <li><a href="#aspek8" onclick="showPage('aspek8')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A8</a></li>
+                    <li><a href="#aspek9" onclick="showPage('aspek9')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Aspek A9</a></li>
+                    <!-- PAUTAN BARU DITAMBAH -->
+                    <li><a href="#keseluruhan" onclick="showPage('keseluruhan')" class="nav-link p-4 inline-block font-semibold hover:bg-gray-600 transition duration-300">Keseluruhan</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Kandungan Utama -->
+        <main class="container mx-auto p-4 md:p-6">
+
+            <!-- Halaman: Muka Depan -->
+            <div id="muka-depan" class="page-content active">
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">
+                    <h2 class="text-4xl font-bold text-blue-700 mb-4">TAPAK KEKUATAN KAMI</h2>
+                    <p class="text-2xl text-gray-600 mb-8">TAHUN 2024</p>
+                    <div class="text-lg space-y-2">
+                        <!-- **** PERUBAHAN DI SINI **** -->
+                        <!-- data-id ditambah pada tag strong untuk disasarkan oleh JavaScript -->
+                        <p><strong>NAMA SEKOLAH:</strong> <strong data-id="nama-sekolah" class="font-normal">SJKC CHUNG HUA BAKAM</strong></p>
+                        <p><strong>KOD SEKOLAH:</strong> <strong data-id="kod-sekolah" class="font-normal">YCC4105</strong></p>
+                        <!-- **** TAMAT PERUBAHAN **** -->
+                    </div>
+                    <p class="mt-8 text-gray-500">Selamat datang ke laman SPARK. Sila gunakan menu navigasi di atas untuk meneroka setiap aspek.</p>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A4 -->
+            <div id="aspek4" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA AKADEMIK</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Bilik Darjah &lt; Daripada 750 kps / Kurang 3 bay</td>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">6</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Bilik Darjah Pemulihan</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">Bilik Komputer</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">Bilik Muzik</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">Bilik RBT (Sekolah Rendah)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">7</td>
+                                    <td class="p-4">Bilik Sains (Sekolah Rendah)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">8</td>
+                                    <td class="p-4">Pusat Sumber/Perpustakaan</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A5 -->
+            <div id="aspek5" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Gelanggang Serbaguna - Terbuka Berbumbung</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Padang Sekolah - Keluasan Trek Kurang 200M</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A6 -->
+            <div id="aspek6" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA HAL EHWAL MURID</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Bilik Khas</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Bilik Pengurusan Disiplin</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">Bilik Serbaguna</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">Ruang Serbaguna</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">Tandas Murid Lelaki</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">7</td>
+                                    <td class="p-4">Tandas Murid Perempuan</td>
+                                    <td class="p-4">11</td>
+                                    <td class="p-4">11</td>
+                                    <td class="p-4">11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A7 -->
+            <div id="aspek7" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">5</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">NoteBook (pengajaran dan pembelajaran)</td>
+                                    <td class="p-4">41</td>
+                                    <td class="p-4">41</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A8 -->
+            <div id="aspek8" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A8: ASRAMA</h2>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA ASRAMA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Halaman: Aspek A9 -->
+            <div id="aspek9" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A9: SOKONGAN IBU BAPA/PENJAGA, KOMUNITI DAN PIHAK SWASTA</h2>
+                    
+                    <!-- Jadual 1: Program Melibatkan Ibu Bapa -->
+                    <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PROGRAM</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Mesyuarat Agung PIBG</td>
+                                    <td class="p-4">-</td>
+                                    <td class="p-4">-</td>
+                                    <td class="p-4">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Gotong Royong Perdana</td>
+                                    <td class="p-4">56</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">96.6%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Hari Terbuka/Hari Kad Laporan/Hari Bertemu Waris</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Jadual 2: Pelibatan Ibu Bapa dalam PIBKS -->
+                    <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
+                                    <td class="p-4">56</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Jadual 3: Pelibatan Komuniti dan Pihak Swasta -->
+                    <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
+                                    <td class="p-4">10</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
+                                    <td class="p-4">12</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- HALAMAN BARU: KESELURUHAN (GABUNGAN) -->
+            <div id="keseluruhan" class="page-content">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold mb-2 text-gray-800">Ringkasan Keseluruhan</h2>
+                    <p class="text-lg text-gray-500 mb-8">Sila semak semua data di bawah sebelum membuat pengesahan. Halaman ini adalah untuk bacaan sahaja.</p>
+
+                    <!-- Salinan Aspek A4 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A4: PRASARANA AKADEMIK</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA AKADEMIK</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Bilik Darjah &lt; Daripada 750 kps / Kurang 3 bay</td>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">6</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Bilik Darjah Pemulihan</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">Bilik Komputer</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">Bilik Muzik</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">Bilik RBT (Sekolah Rendah)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">7</td>
+                                    <td class="p-4">Bilik Sains (Sekolah Rendah)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">8</td>
+                                    <td class="p-4">Pusat Sumber/Perpustakaan</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Salinan Aspek A5 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA SUKAN DAN KOKURIKULUM</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Gelanggang Serbaguna - Terbuka Berbumbung</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Padang Sekolah - Keluasan Trek Kurang 200M</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Salinan Aspek A6 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A6: PRASARANA HAL EHWAL MURID</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA HAL EHWAL MURID</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Bilik Khas</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Bilik Pengurusan Disiplin</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">Bilik Serbaguna </td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">Ruang Serbaguna</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">6</td>
+                                    <td class="p-4">Tandas Murid Lelaki</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                    <td class="p-4">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">7</td>
+                                    <td class="p-4">Tandas Murid Perempuan</td>
+                                    <td class="p-4">11</td>
+                                    <td class="p-4">11</td>
+                                    <td class="p-4">11</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Salinan Aspek A7 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A7: PERSEKITARAN DIGITAL</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
+                                    <td class="p-4">5</td>
+                                    <td class="p-4">5</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">NoteBook (pengajaran dan pembelajaran)</td>
+                                    <td class="p-4">41</td>
+                                    <td class="p-4">41</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Salinan Aspek A8 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A8: ASRAMA</h3>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PRASARANA ASRAMA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Salinan Aspek A9 -->
+                    <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A9: SOKONGAN IBU BAPA/PENJAGA, KOMUNITI DAN PIHAK SWASTA</h3>
+                    
+                    <h4 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h4>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PROGRAM</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Mesyuarat Agung PIBG</td>
+                                    <td class="p-4">-</td>
+                                    <td class="p-4">-</td>
+                                    <td class="p-4">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Gotong Royong Perdana</td>
+                                    <td class="p-4">56</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">96.6%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">3</td>
+                                    <td class="p-4">Hari Terbuka/Hari Kad Laporan/Hari Bertemu Waris</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h4>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
+                                    <td class="p-4">56</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
+                                    <td class="p-4">58</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h4>
+                    <div class="overflow-x-auto rounded-lg border">
+                        <table class="w-full min-w-max divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-4">1</td>
+                                    <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
+                                    <td class="p-4">10</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4">2</td>
+                                    <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
+                                    <td class="p-4">12</td>
+                                    <td class="p-4">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Bahagian Pengesahan (BARU) -->
+                    <div id="submission-section" class="mt-12 pt-8 border-t-2 border-gray-300">
+                        <h3 class="text-2xl font-bold mb-6 text-gray-700">Pengesahan dan Penghantaran</h3>
+                        
+                        <div id="pengesahan-success" class="hidden bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-lg" role="alert">
+                            <p class="font-bold">Berjaya!</p>
+                            <p>Data anda telah berjaya dihantar ke PPD Miri. Terima kasih.</p>
+                        </div>
+
+                        <div id="pengesahan-form">
+                            <p class="text-gray-600 mb-6">Saya dengan ini mengesahkan bahawa semua maklumat yang dipaparkan di atas adalah tepat dan benar bagi sekolah yang log masuk.</p>
+                            
+                            <div class="flex items-center mb-6">
+                                <input id="pengesahan-checkbox" type="checkbox" class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                                <label for="pengesahan-checkbox" class="ml-3 text-md font-medium text-gray-900">Saya Mengesahkan</label>
+                            </div>
+
+                            <p id="pengesahan-error" class="text-red-600 text-sm mb-4 hidden">Sila tandakan kotak pengesahan di atas sebelum menghantar.</p>
+                            
+                            <button id="submit-ppd-button" class="bg-blue-700 text-white p-4 rounded-lg text-lg font-semibold hover:bg-blue-800 transition duration-300 shadow-md w-full sm:w-auto">
+                                Hantar ke PPD
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-gray-300 text-center p-6 mt-8">
+            <p>Projek Inovasi oleh Pahan</p>
+            <p class="mt-1 text-gray-400 text-sm">Versi 1.1 (2025)</p>
+        </footer>
+    
+    </div> <!-- Tutup #main-app -->
+
+    <!-- Skrip JavaScript untuk navigasi DAN log masuk -->
+    <script>
+        // Fungsi untuk menukar halaman
+        function showPage(pageId) {
+            // Sembunyikan semua div kandungan halaman
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Tunjukkan div kandungan halaman yang dipilih
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+            }
+
+            // Kemas kini kelas 'active' pada pautan navigasi
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Semak jika href pautan sepadan dengan pageId
+                if (link.getAttribute('href') === '#' + pageId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Skrol ke bahagian atas halaman untuk pengalaman pengguna yang lebih baik
+            window.scrollTo(0, 0);
+        }
+
+        // Logik utama DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- LOGIK LOG MASUK (BARU) ---
+            const loginPage = document.getElementById('login-page');
+            const mainApp = document.getElementById('main-app');
+            const loginButton = document.getElementById('login-button');
+            const schoolCodeInput = document.getElementById('school-code');
+            const loginError = document.getElementById('login-error');
+            const loggedInSchoolDisplay = document.getElementById('logged-in-school');
+
+            // Kod sekolah yang sah (berdasarkan data anda)
+            // Anda boleh menambah lebih banyak kod dalam array ini: const validCodes = ['YCC4105', 'YCC4106'];
+            const validCodes = {
+                'YCC4105': 'SJKC CHUNG HUA BAKAM'
+                // Tambah kod dan nama sekolah lain di sini
+            };
+
+            // Fungsi untuk mengendalikan log masuk
+            function handleLogin() {
+                const enteredCode = schoolCodeInput.value.trim().toUpperCase();
+                
+                // Semak jika kod yang dimasukkan wujud dalam senarai validCodes
+                if (Object.keys(validCodes).includes(enteredCode)) {
+                    // Berjaya
+                    loginPage.style.display = 'none'; // Sembunyikan halaman log masuk
+                    mainApp.classList.remove('hidden'); // Paparkan aplikasi utama
+                    
+                    // Paparkan kod sekolah yang log masuk di header
+                    loggedInSchoolDisplay.textContent = `${enteredCode} (${validCodes[enteredCode]})`;
+
+                    // Tunjukkan halaman 'muka-depan' secara lalai selepas log masuk
+                    showPage('muka-depan');
+
+                    // **** PERUBAHAN DI SINI ****
+                    // Memastikan elemen wujud sebelum menetapkan textContent
+                    const namaSekolahElement = document.querySelector('#muka-depan strong[data-id="nama-sekolah"]');
+                    const kodSekolahElement = document.querySelector('#muka-depan strong[data-id="kod-sekolah"]');
+
+                    if (namaSekolahElement) {
+                        namaSekolahElement.textContent = validCodes[enteredCode];
+                    }
+                    if (kodSekolahElement) {
+                        kodSekolahElement.textContent = enteredCode;
+                    }
+                    // **** TAMAT PERUBAHAN ****
+
+                } else {
+                    // Gagal
+                    loginError.classList.remove('hidden'); // Paparkan mesej ralat
+                }
+            }
+
+            // Tambah 'event listener' pada butang log masuk
+            loginButton.addEventListener('click', handleLogin);
+            
+            // Benarkan log masuk dengan menekan 'Enter'
+            schoolCodeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+
+
+            // --- LOGIK PENGESAHAN (BARU) ---
+            const submitButton = document.getElementById('submit-ppd-button');
+            const confirmCheckbox = document.getElementById('pengesahan-checkbox');
+            const errorMsg = document.getElementById('pengesahan-error');
+            const successMsg = document.getElementById('pengesahan-success');
+            const submissionForm = document.getElementById('pengesahan-form');
+
+            if (submitButton) {
+                submitButton.addEventListener('click', () => {
+                    // Reset mesej
+                    errorMsg.classList.add('hidden');
+                    
+                    if (confirmCheckbox.checked) {
+                        // Berjaya
+                        successMsg.classList.remove('hidden');
+                        // Sembunyikan borang pengesahan selepas berjaya
+                        submissionForm.style.display = 'none'; 
+                        // Skrol ke atas untuk tunjuk mesej berjaya
+                        document.getElementById('submission-section').scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        // Gagal
+                        errorMsg.classList.remove('hidden');
+                    }
+                });
+            }
+
+
+            // --- LOGIK NAVIGASI LAMA (Kini hanya berfungsi selepas log masuk) ---
+
+            // Juga uruskan jika pengguna menavigasi menggunakan butang 'back'/'forward' pelayar
+            window.onhashchange = () => {
+                const pageId = window.location.hash.substring(1) || 'muka-de';
+                showPage(pageId);
+            };
+
+            // Semak jika ada hash semasa muat halaman (cth: jika pautan dikongsi)
+            // Ini tidak akan berfungsi sehingga selepas log masuk, tetapi ia ditetapkan untuk masa depan
+            const initialPageId = window.location.hash.substring(1) || 'muka-depan';
+            // Tunjukkan halaman 'muka-depan' secara lalai (dilaraskan daripada kod asal)
+            // showPage('muka-depan') akan dipanggil selepas log masuk berjaya
+        });
+    </script>
+
+</body>
+</html>
