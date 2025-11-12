@@ -106,9 +106,20 @@
 
         // Cipta sel input catatan (khas)
         function createCatatanCell(value) {
-            return `<td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" value="${value}" oninput="updateRedText(this)" ${document.getElementById('penyelaras-toggle')?.textContent.includes('Aktifkan') ? 'disabled' : ''}></td>`;
+            // *** DIKEMASKINI: Menambah 'text-sm' pada input ***
+            return `<td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" value="${value}" oninput="updateRedText(this)" ${document.getElementById('penyelaras-toggle')?.textContent.includes('Aktifkan') ? 'disabled' : ''}></td>`;
         }
         
+        // *** BARU: Cipta sel Tarikh/Masa Catatan ***
+        function createTarikhCatatanCell() {
+            return `<td class="p-2"><input type="datetime-local" class="w-full p-2 border rounded text-center text-sm" data-col="tarikh_catatan"></td>`;
+        }
+
+        // *** BARU: Cipta sel Tarikh Semakan ***
+        function createTarikhSemakanCell() {
+            return `<td class="p-2"><input type="date" class="w-full p-2 border rounded text-center text-sm" data-col="tarikh_semakan"></td>`;
+        }
+
         // Cipta sel butang tindakan (Edit/Padam)
         function createActionCell() {
             return `
@@ -123,22 +134,20 @@
         }
 
         // --- FUNGSI TAMBAH BARIS (mengikut jenis jadual) ---
-        // *** DIKEMASKINI: Tidak lagi guna prompt(), terima 'newName' dari modal ***
-
+        
         // Untuk Aspek A4, A5, A6, A8 (Prasarana)
         window.addPrasaranaRow = function(tableId, newName) {
-            if (!newName) return; // Pastikan nama ada
+            if (!newName) return; 
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
 
-            // --- BARU: Semak jika ada baris "Tiada data" dan buang ---
             const noDataRow = tableBody.querySelector('td[colspan]');
             if (noDataRow) {
-                noDataRow.parentNode.remove(); // Buang <tr> yang mengandungi sel "Tiada data"
+                noDataRow.parentNode.remove(); 
             }
-            // --- TAMAT PERUBAHAN ---
 
             const newRow = tableBody.insertRow();
+            // *** DIKEMASKINI: Menambah sel-sel baru ***
             newRow.innerHTML = `
                 <td class="p-4"></td>
                 <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
@@ -146,6 +155,8 @@
                 ${createInputCell('number', 0, 'fungsi')}
                 ${createInputCell('number', 0, 'perlu')}
                 ${createCatatanCell('')}
+                ${createTarikhCatatanCell()}
+                ${createTarikhSemakanCell()}
                 ${createActionCell()}
             `;
             window.reindexTable(tableBody);
@@ -157,12 +168,15 @@
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
+            // *** DIKEMASKINI: Menambah sel-sel baru ***
             newRow.innerHTML = `
                 <td class="p-4"></td>
                 <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('number', 0, 'ada')}
                 ${createInputCell('number', 0, 'fungsi')}
                 ${createCatatanCell('')}
+                ${createTarikhCatatanCell()}
+                ${createTarikhSemakanCell()}
                 ${createActionCell()}
             `;
             window.reindexTable(tableBody);
@@ -174,6 +188,7 @@
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
+            // *** DIKEMASKINI: Menambah sel-sel baru ***
             newRow.innerHTML = `
                 <td class="p-4"></td>
                 <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
@@ -181,6 +196,8 @@
                 ${createInputCell('text', 0, 'jumlah_ibubapa')}
                 ${createInputCell('text', '0%', 'peratus_hadir')}
                 ${createCatatanCell('')}
+                ${createTarikhCatatanCell()}
+                ${createTarikhSemakanCell()}
                 ${createActionCell()}
             `;
             window.reindexTable(tableBody);
@@ -192,12 +209,15 @@
 
             const tableBody = document.getElementById(tableId).querySelector('tbody');
             const newRow = tableBody.insertRow();
+            // *** DIKEMASKINI: Menambah sel-sel baru ***
             newRow.innerHTML = `
                 <td class="p-4"></td>
                 <td class="p-4 whitespace-normal break-words">${newName.trim()}</td>
                 ${createInputCell('number', 0, 'jumlah_terlibat')}
                 ${createInputCell('text', '0%', 'peratus_terlibat')}
                 ${createCatatanCell('')}
+                ${createTarikhCatatanCell()}
+                ${createTarikhSemakanCell()}
                 ${createActionCell()}
             `;
             window.reindexTable(tableBody);
@@ -209,30 +229,64 @@
             const allTables = document.querySelectorAll('table[id$="-table"], table[id^="aspek9-table-"]');
 
             allTables.forEach(table => {
-                // 1. Tambah Pengepala "Tindakan"
+                // 1. Tambah Pengepala "Tindakan" dan lajur baru
                 const headerRow = table.querySelector('thead tr');
                 if (headerRow) {
-                    const th = document.createElement('th');
-                    th.className = "p-4 text-left text-sm font-semibold text-gray-600 uppercase w-20"; // Lebar tetap
-                    th.textContent = 'Tindakan';
-                    headerRow.appendChild(th);
+                    // *** BARU: Tambah Pengepala Tarikh ***
+                    const thTarikhCatatan = document.createElement('th');
+                    thTarikhCatatan.className = "p-2 text-left text-xs font-semibold text-gray-600 uppercase w-40";
+                    thTarikhCatatan.textContent = 'TARIKH/MASA CATATAN';
+                    
+                    const thTarikhSemakan = document.createElement('th');
+                    thTarikhSemakan.className = "p-2 text-left text-xs font-semibold text-gray-600 uppercase w-32";
+                    thTarikhSemakan.textContent = 'TARIKH SEMAKAN';
+
+                    const thTindakan = document.createElement('th');
+                    thTindakan.className = "p-4 text-left text-sm font-semibold text-gray-600 uppercase w-20"; // Lebar tetap
+                    thTindakan.textContent = 'Tindakan';
+
+                    // Masukkan SEBELUM lajur tindakan (jika wujud) atau di hujung
+                    const lastHeader = headerRow.querySelector('th:last-child');
+                    if (lastHeader) {
+                        // Masukkan *selepas* lajur Catatan
+                        const catatanHeader = headerRow.querySelector('th:nth-child(6)'); // Anggapan lajur Catatan sentiasa wujud
+                        if (catatanHeader) {
+                            catatanHeader.after(thTindakan); // Letak Tindakan dulu
+                            catatanHeader.after(thTarikhSemakan); // Letak Tarikh Semakan
+                            catatanHeader.after(thTarikhCatatan); // Letak Tarikh Catatan
+                        } else {
+                            // Fallback jika tidak jumpa
+                            headerRow.appendChild(thTarikhCatatan);
+                            headerRow.appendChild(thTarikhSemakan);
+                            headerRow.appendChild(thTindakan);
+                        }
+                    }
                 }
 
-                // 2. Tambah Sel Tindakan (Butang) pada baris sedia ada
+                // 2. Tambah Sel Tindakan (Butang) dan sel tarikh pada baris sedia ada
                 const bodyRows = table.querySelectorAll('tbody tr');
                 bodyRows.forEach(row => {
                     // Semak jika ini baris "Tiada data" di A8
                     const colspanCell = row.querySelector('td[colspan]');
                     if (colspanCell) {
-                        // Tambah 1 pada colspan untuk lajur "Tindakan" baru
+                        // *** DIKEMASKINI: colspan ditambah 3 (Tindakan, Tarikh1, Tarikh2) ***
                         const currentColspan = parseInt(colspanCell.getAttribute('colspan')) || 0;
-                        colspanCell.setAttribute('colspan', currentColspan + 1);
+                        colspanCell.setAttribute('colspan', currentColspan + 3);
                         return; // Jangan tambah butang pada baris ini
                     }
-                    // Cipta dan tambah sel tindakan
-                    const td = document.createElement('td');
-                    td.className = "p-2 align-middle text-center";
-                    td.innerHTML = `
+
+                    // *** BARU: Cipta sel-sel baru ***
+                    const tdTarikhCatatan = document.createElement('td');
+                    tdTarikhCatatan.className = "p-2";
+                    tdTarikhCatatan.innerHTML = `<input type="datetime-local" class="w-full p-2 border rounded text-center text-sm" data-col="tarikh_catatan">`;
+                    
+                    const tdTarikhSemakan = document.createElement('td');
+                    tdTarikhSemakan.className = "p-2";
+                    tdTarikhSemakan.innerHTML = `<input type="date" class="w-full p-2 border rounded text-center text-sm" data-col="tarikh_semakan">`;
+
+                    const tdTindakan = document.createElement('td');
+                    tdTindakan.className = "p-2 align-middle text-center";
+                    tdTindakan.innerHTML = `
                         <button onclick="editRow(this)" class="text-blue-600 hover:text-blue-800 p-1 inline-block" title="Edit Nama">
                             ${iconEdit}
                         </button>
@@ -240,7 +294,22 @@
                             ${iconDelete}
                         </button>
                     `;
-                    row.appendChild(td);
+
+                    // Masukkan sel-sel baru *selepas* sel catatan
+                    const catatanCell = row.querySelector('td .catatan-input');
+                    if(catatanCell) {
+                        const parentTd = catatanCell.closest('td');
+                        parentTd.after(tdTindakan);
+                        parentTd.after(tdTarikhSemakan);
+                        parentTd.after(tdTarikhCatatan);
+                    } else {
+                        // Fallback jika baris tiada input catatan (cth: A7)
+                        const lastCell = row.querySelector('td:last-child');
+                        lastCell.after(tdTindakan);
+                        lastCell.after(tdTarikhSemakan);
+                        lastCell.after(tdTarikhCatatan);
+                    }
+
 
                     // *** BARU: Tambah kelas wrap pada sel senarai sedia ada ***
                     const nameCell = row.querySelector('td:nth-child(2)');
@@ -337,7 +406,7 @@
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                     </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -347,7 +416,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                     </tr>
                                 <tr>
                                     <td class="p-4">2</td>
@@ -355,7 +424,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
@@ -363,7 +432,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
@@ -371,7 +440,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
@@ -379,7 +448,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
@@ -387,7 +456,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
@@ -395,7 +464,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">8</td>
@@ -403,7 +472,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -430,7 +499,7 @@
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -440,7 +509,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
@@ -448,7 +517,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
@@ -456,7 +525,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -483,7 +552,7 @@
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -493,7 +562,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
@@ -501,7 +570,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
@@ -509,7 +578,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
@@ -517,7 +586,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
@@ -525,7 +594,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
@@ -533,7 +602,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
@@ -541,7 +610,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="perlu"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -567,7 +636,7 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-96">SENARAI PERANTI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -576,14 +645,14 @@
                                     <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="5" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="5" data-col="fungsi"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">NoteBook (pengajaran dan pembelajaran)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="41" data-col="ada"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="41" data-col="fungsi"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
 
                             </tbody>
@@ -611,12 +680,12 @@
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. SEDIA ADA</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. BERFUNGSI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase w-24">BIL. KEPERLUAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <tr>
-                                    <td colspan="6" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
+                                    <td colspan="9" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -644,7 +713,7 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">BILANGAN KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN IBU BAPA/PENJAGA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% KEHADIRAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -654,7 +723,7 @@
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="hadir"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="jumlah_ibubapa"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="peratus_hadir"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
@@ -662,7 +731,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="56" data-col="hadir"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_ibubapa"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="96.6%" data-col="peratus_hadir"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
@@ -670,7 +739,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="hadir"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_ibubapa"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_hadir"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -691,7 +760,7 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-96">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN IBU BAPA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% PENGLIBATAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -700,14 +769,14 @@
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="56" data-col="jumlah_terlibat"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_terlibat"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -728,7 +797,7 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-96">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-32">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase w-24">% PENGLIBATAN</th>
-                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
+                                    <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
@@ -737,14 +806,14 @@
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="10" data-col="jumlah_terlibat"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="12" data-col="jumlah_terlibat"></td>
                                     <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
-                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded text-sm" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -862,7 +931,8 @@
             // *** BARU: Jika tiada lagi baris, tambah balik baris "Tiada data" (Khas untuk A8) ***
             if (tableBody.rows.length === 0 && tableBody.closest('table').id === 'aspek8-table') {
                 const newRow = tableBody.insertRow();
-                newRow.innerHTML = `<td colspan="7" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>`;
+                // *** DIKEMASKINI: Colspan ditukar ke 9 ***
+                newRow.innerHTML = `<td colspan="9" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>`;
             } else {
                 window.reindexTable(tableBody); // Panggil reindex jika bukan A8 yang kosong
             }
