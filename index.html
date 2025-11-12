@@ -34,6 +34,156 @@
         /* Memastikan fon Inter dimuatkan */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     </style>
+
+    <script>
+        // --- FUNGSI IKON (SVG) ---
+        const iconEdit = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>`;
+        const iconDelete = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>`;
+        const iconPlus = `<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>`;
+
+        // --- FUNGSI BANTUAN UNTUK CIPTA SEL ---
+        
+        // Cipta sel input (untuk data-col)
+        function createInputCell(type, value, dataCol) {
+            return `<td class="p-2"><input type="${type}" class="w-full p-2 border rounded text-center" value="${value}" data-col="${dataCol}"></td>`;
+        }
+
+        // Cipta sel input catatan (khas)
+        function createCatatanCell(value) {
+            return `<td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" value="${value}" oninput="updateRedText(this)" ${document.getElementById('penyelaras-toggle')?.textContent.includes('Aktifkan') ? 'disabled' : ''}></td>`;
+        }
+        
+        // Cipta sel butang tindakan (Edit/Padam)
+        function createActionCell() {
+            return `
+            <td class="p-2 align-middle text-center">
+                <button onclick="editRow(this)" class="text-blue-600 hover:text-blue-800 p-1 inline-block" title="Edit Nama">
+                    ${iconEdit}
+                </button>
+                <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 p-1 inline-block" title="Padam Baris">
+                    ${iconDelete}
+                </button>
+            </td>`;
+        }
+
+        // --- FUNGSI TAMBAH BARIS (mengikut jenis jadual) ---
+
+        // Untuk Aspek A4, A5, A6 (Prasarana)
+        window.addPrasaranaRow = function(tableId) {
+            const newName = prompt("Masukkan nama prasarana baru:");
+            if (!newName || newName.trim() === "") return;
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td class="p-4"></td>
+                <td class="p-4">${newName.trim()}</td>
+                ${createInputCell('number', 0, 'ada')}
+                ${createInputCell('number', 0, 'fungsi')}
+                ${createInputCell('number', 0, 'perlu')}
+                ${createCatatanCell('')}
+                ${createActionCell()}
+            `;
+            window.reindexTable(tableBody);
+        }
+
+        // Untuk Aspek A7 (Peranti Digital)
+        window.addPerantiRow = function(tableId) {
+            const newName = prompt("Masukkan nama peranti baru:");
+            if (!newName || newName.trim() === "") return;
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td class="p-4"></td>
+                <td class="p-4">${newName.trim()}</td>
+                ${createInputCell('number', 0, 'ada')}
+                ${createInputCell('number', 0, 'fungsi')}
+                ${createCatatanCell('')}
+                ${createActionCell()}
+            `;
+            window.reindexTable(tableBody);
+        }
+
+        // Untuk Aspek A9 - Jadual 1 (Program Ibu Bapa)
+        window.addA91Row = function(tableId) {
+            const newName = prompt("Masukkan nama program baru:");
+            if (!newName || newName.trim() === "") return;
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td class="p-4"></td>
+                <td class="p-4">${newName.trim()}</td>
+                ${createInputCell('text', 0, 'hadir')}
+                ${createInputCell('text', 0, 'jumlah_ibubapa')}
+                ${createInputCell('text', '0%', 'peratus_hadir')}
+                ${createCatatanCell('')}
+                ${createActionCell()}
+            `;
+            window.reindexTable(tableBody);
+        }
+
+        // Untuk Aspek A9 - Jadual 2 & 3 (Pelibatan PIBKS)
+        window.addA923Row = function(tableId) {
+            const newName = prompt("Masukkan nama pelibatan baru:");
+            if (!newName || newName.trim() === "") return;
+
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+                <td class="p-4"></td>
+                <td class="p-4">${newName.trim()}</td>
+                ${createInputCell('number', 0, 'jumlah_terlibat')}
+                ${createInputCell('text', '0%', 'peratus_terlibat')}
+                ${createCatatanCell('')}
+                ${createActionCell()}
+            `;
+            window.reindexTable(tableBody);
+        }
+
+        // --- FUNGSI UNTUK MENGURUS JADUAL SEDIA ADA (dipanggil pada DOMContentLoaded) ---
+        function setupDynamicTables() {
+            // Sasarkan semua jadual data (elak jadual lain jika ada)
+            const allTables = document.querySelectorAll('table[id$="-table"], table[id^="aspek9-table-"]');
+
+            allTables.forEach(table => {
+                // 1. Tambah Pengepala "Tindakan"
+                const headerRow = table.querySelector('thead tr');
+                if (headerRow) {
+                    const th = document.createElement('th');
+                    th.className = "p-4 text-left text-sm font-semibold text-gray-600 uppercase";
+                    th.textContent = 'Tindakan';
+                    headerRow.appendChild(th);
+                }
+
+                // 2. Tambah Sel Tindakan (Butang) pada baris sedia ada
+                const bodyRows = table.querySelectorAll('tbody tr');
+                bodyRows.forEach(row => {
+                    // Semak jika ini baris "Tiada data" di A8
+                    const colspanCell = row.querySelector('td[colspan]');
+                    if (colspanCell) {
+                        // Tambah 1 pada colspan untuk lajur "Tindakan" baru
+                        const currentColspan = parseInt(colspanCell.getAttribute('colspan')) || 0;
+                        colspanCell.setAttribute('colspan', currentColspan + 1);
+                        return; // Jangan tambah butang pada baris ini
+                    }
+                    // Cipta dan tambah sel tindakan
+                    const td = document.createElement('td');
+                    td.className = "p-2 align-middle text-center";
+                    td.innerHTML = `
+                        <button onclick="editRow(this)" class="text-blue-600 hover:text-blue-800 p-1 inline-block" title="Edit Nama">
+                            ${iconEdit}
+                        </button>
+                        <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 p-1 inline-block" title="Padam Baris">
+                            ${iconDelete}
+                        </button>
+                    `;
+                    row.appendChild(td);
+                });
+            });
+        }
+    </script>
 </head>
 <body class="bg-gray-100 font-inter text-gray-800">
 
@@ -104,7 +254,14 @@
 
             <div id="aspek4" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
+                        <button onclick="addPrasaranaRow('aspek4-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah Baris
+                        </button>
+                    </div>
+                    
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek4-table">
                             <thead class="bg-gray-100">
@@ -115,7 +272,7 @@
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-2 text-left text-xs font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
-                                </tr>
+                                    </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <tr>
@@ -125,7 +282,7 @@
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
                                     <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
                                     <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
-                                </tr>
+                                    </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Bilik Darjah &lt; Daripada 750 kps / Kurang 3 bay</td>
@@ -190,7 +347,14 @@
 
             <div id="aspek5" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
+                        <button onclick="addPrasaranaRow('aspek5-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah Baris
+                        </button>
+                    </div>
+                    
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek5-table">
                             <thead class="bg-gray-100">
@@ -236,7 +400,14 @@
 
             <div id="aspek6" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
+                        <button onclick="addPrasaranaRow('aspek6-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah Baris
+                        </button>
+                    </div>
+
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek6-table">
                             <thead class="bg-gray-100">
@@ -314,7 +485,14 @@
 
             <div id="aspek7" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
+                        <button onclick="addPerantiRow('aspek7-table')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg inline-flex items-center transition duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah Baris
+                        </button>
+                    </div>
+
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek7-table">
                             <thead class="bg-gray-100">
@@ -377,7 +555,13 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A9: SOKONGAN IBU BAPA/PENJAGA, KOMUNITI DAN PIHAK SWASTA</h2>
                     
-                    <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h3>
+                    <div class="flex justify-between items-center mt-6 mb-4">
+                        <h3 class="text-xl font-semibold text-gray-600">Program Melibatkan Ibu Bapa</h3>
+                        <button onclick="addA91Row('aspek9-table-1')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah
+                        </button>
+                    </div>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-1">
                             <thead class="bg-gray-100">
@@ -419,7 +603,13 @@
                         </table>
                     </div>
 
-                    <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
+                    <div class="flex justify-between items-center mt-8 mb-4">
+                        <h3 class="text-xl font-semibold text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
+                        <button onclick="addA923Row('aspek9-table-2')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah
+                        </button>
+                    </div>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-2">
                             <thead class="bg-gray-100">
@@ -450,7 +640,13 @@
                         </table>
                     </div>
 
-                    <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
+                    <div class="flex justify-between items-center mt-8 mb-4">
+                        <h3 class="text-xl font-semibold text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
+                        <button onclick="addA923Row('aspek9-table-3')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-3 rounded-lg inline-flex items-center transition duration-300 text-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Tambah
+                        </button>
+                    </div>
                     <div class="overflow-x-auto rounded-lg border">
                         <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-3">
                             <thead class="bg-gray-100">
@@ -488,6 +684,7 @@
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-3xl font-bold mb-2 text-gray-800">Ringkasan Keseluruhan</h2>
                     <p class="text-lg text-gray-500 mb-8">Sila semak semua data di bawah sebelum membuat pengesahan. Halaman ini adalah untuk bacaan sahaja.</p>
+                    <p class="text-sm text-red-600 bg-red-100 p-3 rounded-lg mb-6"><strong>Amaran:</strong> Baris yang ditambah atau dipadam secara manual pada halaman Aspek tidak akan dipaparkan pada halaman ringkasan ini. Halaman ini hanya menyegerakkan data untuk item asal.</p>
 
                     <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-700 border-t pt-6">ASPEK A4: PRASARANA AKADEMIK</h3>
                     <div class="overflow-x-auto rounded-lg border">
@@ -917,6 +1114,58 @@
             window.scrollTo(0, 0);
         }
 
+        // --- FUNGSI BARU UNTUK EDIT/PADAM/INDEKS ---
+        
+        /**
+         * Mengira semula nombor BIL untuk jadual
+         * @param {HTMLElement} tableBody - Elemen <tbody> jadual
+         */
+        window.reindexTable = function(tableBody) {
+            if (!tableBody) return;
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                const firstCell = row.querySelector('td:first-child');
+                // Pastikan ia bukan sel colspan (cth: "Tiada data")
+                if (firstCell && !firstCell.hasAttribute('colspan')) {
+                    firstCell.textContent = index + 1;
+                }
+            });
+        }
+
+        /**
+         * Edit nama item pada baris (sel ke-2)
+         * @param {HTMLElement} buttonEl - Butang edit yang ditekan
+         */
+        window.editRow = function(buttonEl) {
+            const row = buttonEl.closest('tr');
+            const nameCell = row.querySelector('td:nth-child(2)');
+            if (!nameCell) return;
+            
+            const currentName = nameCell.textContent;
+            const newName = prompt("Sila edit nama:", currentName);
+
+            if (newName && newName.trim() !== "") {
+                nameCell.textContent = newName.trim();
+                // Tandakan item ini telah diubah (jika perlu)
+                nameCell.classList.add('font-bold', 'text-blue-600'); 
+            }
+        }
+
+        /**
+         * Padam baris jadual
+         * @param {HTMLElement} buttonEl - Butang padam yang ditekan
+         */
+        window.deleteRow = function(buttonEl) {
+            if (!confirm("Anda pasti mahu padam baris ini?")) {
+                return;
+            }
+            const row = buttonEl.closest('tr');
+            const tableBody = row.parentNode; // Dapatkan <tbody>
+            row.remove();
+            window.reindexTable(tableBody); // Panggil reindex
+        }
+
+
         // Logik utama DOMContentLoaded
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -964,6 +1213,11 @@
                     }
                     // **** TAMAT PERUBAHAN ****
 
+                    // --- BARU: Sediakan jadual dinamik SELEPAS log masuk ---
+                    if (window.setupDynamicTables) {
+                        window.setupDynamicTables();
+                    }
+
                 } else {
                     // Gagal
                     loginError.classList.remove('hidden'); // Paparkan mesej ralat
@@ -984,11 +1238,17 @@
             const penyelarasButton = document.getElementById('penyelaras-toggle');
             if (penyelarasButton) {
                 penyelarasButton.addEventListener('click', () => {
-                    const inputs = document.querySelectorAll('.catatan-input');
+                    // Sasarkan SEMUA input catatan, termasuk yang ditambah secara dinamik
+                    const inputs = document.querySelectorAll('.catatan-input'); 
                     const btn = document.getElementById('penyelaras-toggle');
                     
-                    // Semak status input pertama (semua akan sama)
-                    if (inputs.length > 0 && inputs[0].disabled) {
+                    // Semak status (kita andaikan semua sama)
+                    let isCurrentlyDisabled = false;
+                    if (inputs.length > 0) {
+                        isCurrentlyDisabled = inputs[0].disabled;
+                    }
+                    
+                    if (isCurrentlyDisabled) {
                         // Aktifkan Mod
                         inputs.forEach(input => input.disabled = false);
                         btn.textContent = 'Kunci Mod Penyelaras';
@@ -1073,10 +1333,12 @@
                     // Jika A8 (tiada data), teruskan
                     if (sourceTableId === 'aspek8-table') return;
                     
-                    sourceRows.forEach((sourceRow, rowIndex) => {
-                        if (!displayRows[rowIndex]) return; // Pastikan baris paparan wujud
+                    // PENTING: Hanya segerakkan data untuk bilangan baris yang wujud di "Keseluruhan"
+                    // Ini tidak akan menyegerakkan baris yang baru ditambah
+                    displayRows.forEach((displayRow, rowIndex) => {
+                        const sourceRow = sourceRows[rowIndex];
+                        if (!sourceRow) return; // Berhenti jika baris sumber tidak wujud (cth: dipadam)
 
-                        const displayRow = displayRows[rowIndex];
                         const sourceInputs = sourceRow.querySelectorAll('input');
                         const displayItemCell = displayRow.querySelector('td:nth-child(2)'); // Untuk teks merah
                         let catatanValue = '';
