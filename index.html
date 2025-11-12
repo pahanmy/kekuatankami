@@ -72,6 +72,10 @@
                 <div class="text-right mt-4 sm:mt-0">
                     <p class="text-sm text-blue-300">Log Masuk Sebagai:</p>
                     <p id="logged-in-school" class="text-lg font-semibold"></p>
+                    <!-- BUTANG BARU UNTUK MOD PENYELARAS -->
+                    <button id="penyelaras-toggle" class="mt-2 text-xs bg-yellow-400 text-gray-800 font-bold py-1 px-3 rounded-full hover:bg-yellow-300 transition duration-300">
+                        Aktifkan Mod Penyelaras
+                    </button>
                 </div>
             </div>
         </header>
@@ -117,8 +121,9 @@
             <div id="aspek4" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A4: PRASARANA AKADEMIK</h2>
+                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek4-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
@@ -126,64 +131,75 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Bilik Darjah &lt; Daripada 750 kps / Kurang 3 bay</td>
-                                    <td class="p-4">6</td>
-                                    <td class="p-4">6</td>
-                                    <td class="p-4">6</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="6" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Bilik Darjah Pemulihan</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
                                     <td class="p-4">Bilik Komputer</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
                                     <td class="p-4">Bilik Muzik</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
                                     <td class="p-4">Bilik RBT (Sekolah Rendah)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
                                     <td class="p-4">Bilik Sains (Sekolah Rendah)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">8</td>
                                     <td class="p-4">Pusat Sumber/Perpustakaan</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -195,8 +211,9 @@
             <div id="aspek5" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A5: PRASARANA SUKAN DAN KOKURIKULUM</h2>
+                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek5-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
@@ -204,29 +221,35 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Gelanggang Serbaguna - Terbuka Berbumbung</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Padang Sekolah - Keluasan Trek Kurang 200M</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -238,8 +261,9 @@
             <div id="aspek6" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A6: PRASARANA HAL EHWAL MURID</h2>
+                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek6-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
@@ -247,57 +271,67 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Bilik Khas</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Bilik Pengurusan Disiplin</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="1" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
                                     <td class="p-4">Bilik Serbaguna</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="2" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
                                     <td class="p-4">Ruang Serbaguna</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
                                     <td class="p-4">Tandas Murid Lelaki</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="4" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
                                     <td class="p-4">Tandas Murid Perempuan</td>
-                                    <td class="p-4">11</td>
-                                    <td class="p-4">11</td>
-                                    <td class="p-4">11</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="11" data-col="perlu"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -309,28 +343,34 @@
             <div id="aspek7" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A7: PERSEKITARAN DIGITAL</h2>
+                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek7-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
-                                    <td class="p-4">5</td>
-                                    <td class="p-4">5</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="5" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="5" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">NoteBook (pengajaran dan pembelajaran)</td>
-                                    <td class="p-4">41</td>
-                                    <td class="p-4">41</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="41" data-col="ada"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="41" data-col="fungsi"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
 
                             </tbody>
@@ -343,8 +383,9 @@
             <div id="aspek8" class="page-content">
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-bold mb-6 text-gray-700">ASPEK A8: ASRAMA</h2>
+                    <!-- TAMBAH ID JADUAL -->
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek8-table">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
@@ -352,11 +393,14 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 <tr>
-                                    <td colspan="5" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
+                                    <!-- Tiada input di sini kerana tiada data -->
+                                    <td colspan="6" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -372,7 +416,8 @@
                     <!-- Jadual 1: Program Melibatkan Ibu Bapa -->
                     <h3 class="text-xl font-semibold mt-6 mb-4 text-gray-600">Program Melibatkan Ibu Bapa</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <!-- TAMBAH ID JADUAL -->
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-1">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
@@ -380,29 +425,35 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Mesyuarat Agung PIBG</td>
-                                    <td class="p-4">-</td>
-                                    <td class="p-4">-</td>
-                                    <td class="p-4">-</td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="hadir"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="jumlah_ibubapa"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="-" data-col="peratus_hadir"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Gotong Royong Perdana</td>
-                                    <td class="p-4">56</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">96.6%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="56" data-col="hadir"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_ibubapa"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="96.6%" data-col="peratus_hadir"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Hari Terbuka/Hari Kad Laporan/Hari Bertemu Waris</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="hadir"></td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_ibubapa"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_hadir"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -411,27 +462,33 @@
                     <!-- Jadual 2: Pelibatan Ibu Bapa dalam PIBKS -->
                     <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Ibu Bapa dalam PIBKS</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <!-- TAMBAH ID JADUAL -->
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-2">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
-                                    <td class="p-4">56</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="56" data-col="jumlah_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="58" data-col="jumlah_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -440,27 +497,33 @@
                     <!-- Jadual 3: Pelibatan Komuniti dan Pihak Swasta -->
                     <h3 class="text-xl font-semibold mt-8 mb-4 text-gray-600">Pelibatan Komuniti dan Pihak Swasta dalam PIBKS</h3>
                     <div class="overflow-x-auto rounded-lg border">
-                        <table class="w-full min-w-max divide-y divide-gray-200">
+                        <!-- TAMBAH ID JADUAL -->
+                        <table class="w-full min-w-max divide-y divide-gray-200" id="aspek9-table-3">
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL.</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
+                                <!-- BARIS DIKEMAS KINI DENGAN INPUT -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
-                                    <td class="p-4">10</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="10" data-col="jumlah_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
-                                    <td class="p-4">12</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-2"><input type="number" class="w-full p-2 border rounded text-center" value="12" data-col="jumlah_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="w-full p-2 border rounded text-center" value="100%" data-col="peratus_terlibat"></td>
+                                    <td class="p-2"><input type="text" class="catatan-input w-full p-2 border rounded" oninput="updateRedText(this)" disabled></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -486,64 +549,76 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A4-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Aktiviti Kelas Agama/ Bilik Pendidikan Islam</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Bilik Darjah &lt; Daripada 750 kps / Kurang 3 bay</td>
-                                    <td class="p-4">6</td>
-                                    <td class="p-4">6</td>
-                                    <td class="p-4">6</td>
+                                    <td class="p-4 text-center" data-col-display="ada">6</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">6</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">6</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Bilik Darjah Pemulihan</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
                                     <td class="p-4">Bilik Komputer</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
                                     <td class="p-4">Bilik Muzik</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
                                     <td class="p-4">Bilik RBT (Sekolah Rendah)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
                                     <td class="p-4">Bilik Sains (Sekolah Rendah)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">8</td>
                                     <td class="p-4">Pusat Sumber/Perpustakaan</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-4 text-center" data-col-display="ada">2</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">2</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">2</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -560,29 +635,36 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A5-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Peralatan Sukan - Stor 1 Bay</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Gelanggang Serbaguna - Terbuka Berbumbung</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Padang Sekolah - Keluasan Trek Kurang 200M</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -599,57 +681,68 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A6-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Bilik Operasi Skim Pinjaman Buku Teks Sekolah (BOSS)</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Bilik Khas</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-4 text-center" data-col-display="ada">2</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">2</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">2</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Bilik Pengurusan Disiplin</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
-                                    <td class="p-4">1</td>
+                                    <td class="p-4 text-center" data-col-display="ada">1</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">1</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">1</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">4</td>
                                     <td class="p-4">Bilik Serbaguna </td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
-                                    <td class="p-4">2</td>
+                                    <td class="p-4 text-center" data-col-display="ada">2</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">2</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">2</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">5</td>
                                     <td class="p-4">Ruang Serbaguna</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
+                                    <td class="p-4 text-center" data-col-display="ada">4</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">4</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">4</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">6</td>
                                     <td class="p-4">Tandas Murid Lelaki</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
-                                    <td class="p-4">4</td>
+                                    <td class="p-4 text-center" data-col-display="ada">4</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">4</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">4</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">7</td>
                                     <td class="p-4">Tandas Murid Perempuan</td>
-                                    <td class="p-4">11</td>
-                                    <td class="p-4">11</td>
-                                    <td class="p-4">11</td>
+                                    <td class="p-4 text-center" data-col-display="ada">11</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">11</td>
+                                    <td class="p-4 text-center" data-col-display="perlu">11</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -665,20 +758,26 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">SENARAI PERANTI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A7-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Komputer (pengajaran dan pembelajaran)</td>
-                                    <td class="p-4">5</td>
-                                    <td class="p-4">5</td>
+                                    <td class="p-4 text-center" data-col-display="ada">5</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">5</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">NoteBook (pengajaran dan pembelajaran)</td>
-                                    <td class="p-4">41</td>
-                                    <td class="p-4">41</td>
+                                    <td class="p-4 text-center" data-col-display="ada">41</td>
+                                    <td class="p-4 text-center" data-col-display="fungsi">41</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -695,11 +794,14 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. SEDIA ADA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. BERFUNGSI</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BIL. KEPERLUAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A8-body">
                                 <tr>
-                                    <td colspan="5" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
+                                    <td colspan="6" class="p-4 text-center text-gray-500">Tiada data prasarana asrama dilaporkan.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -718,29 +820,36 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KEHADIRAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA/PENJAGA</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% KEHADIRAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-1-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Mesyuarat Agung PIBG</td>
-                                    <td class="p-4">-</td>
-                                    <td class="p-4">-</td>
-                                    <td class="p-4">-</td>
+                                    <td class="p-4 text-center" data-col-display="hadir">-</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_ibubapa">-</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_hadir">-</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Gotong Royong Perdana</td>
-                                    <td class="p-4">56</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">96.6%</td>
+                                    <td class="p-4 text-center" data-col-display="hadir">56</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_ibubapa">58</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_hadir">96.6%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">3</td>
                                     <td class="p-4">Hari Terbuka/Hari Kad Laporan/Hari Bertemu Waris</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-4 text-center" data-col-display="hadir">58</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_ibubapa">58</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_hadir">100%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -755,20 +864,26 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN IBU BAPA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-2-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
-                                    <td class="p-4">56</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_terlibat">56</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_terlibat">100%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
-                                    <td class="p-4">58</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_terlibat">58</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_terlibat">100%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -783,20 +898,26 @@
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">PELIBATAN</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">BILANGAN KOMUNITI / PIHAK SWASTA TERLIBAT</th>
                                     <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">% PENGLIBATAN</th>
+                                    <!-- LAJUR BARU -->
+                                    <th class="p-4 text-left text-sm font-semibold text-gray-600 uppercase">CATATAN (PENYELARAS DAERAH)</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <!-- TAMBAH ID TBODY -->
+                            <tbody class="divide-y divide-gray-200" id="keseluruhan-A9-3-body">
+                                <!-- SEL PAPARAN DIKEMAS KINI DENGAN data-col-display -->
                                 <tr>
                                     <td class="p-4">1</td>
                                     <td class="p-4">Sukarelawan dalam Kelas (SdK)</td>
-                                    <td class="p-4">10</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_terlibat">10</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_terlibat">100%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4">2</td>
                                     <td class="p-4">Penajaan/Sumbangan (material/bukan material)</td>
-                                    <td class="p-4">12</td>
-                                    <td class="p-4">100%</td>
+                                    <td class="p-4 text-center" data-col-display="jumlah_terlibat">12</td>
+                                    <td class="p-4 text-center" data-col-display="peratus_terlibat">100%</td>
+                                    <td class="catatan-display p-4" data-col-display="catatan"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -855,6 +976,14 @@
             const activePage = document.getElementById(pageId);
             if (activePage) {
                 activePage.classList.add('active');
+            }
+
+            // BARU: Panggil populateKeseluruhan() bila page 'keseluruhan' ditunjuk
+            if (pageId === 'keseluruhan') {
+                // Pastikan fungsi wujud sebelum memanggilnya
+                if (window.populateKeseluruhan) {
+                    window.populateKeseluruhan();
+                }
             }
 
             // Kemas kini kelas 'active' pada pautan navigasi
@@ -934,6 +1063,30 @@
                 }
             });
 
+            // --- BUTANG MOD PENYELARAS (BARU) ---
+            const penyelarasButton = document.getElementById('penyelaras-toggle');
+            if (penyelarasButton) {
+                penyelarasButton.addEventListener('click', () => {
+                    const inputs = document.querySelectorAll('.catatan-input');
+                    const btn = document.getElementById('penyelaras-toggle');
+                    
+                    // Semak status input pertama (semua akan sama)
+                    if (inputs.length > 0 && inputs[0].disabled) {
+                        // Aktifkan Mod
+                        inputs.forEach(input => input.disabled = false);
+                        btn.textContent = 'Kunci Mod Penyelaras';
+                        btn.classList.replace('bg-yellow-400', 'bg-red-500');
+                        btn.classList.replace('text-gray-800', 'text-white');
+                    } else {
+                        // Kunci Mod
+                        inputs.forEach(input => input.disabled = true);
+                        btn.textContent = 'Aktifkan Mod Penyelaras';
+                        btn.classList.replace('bg-red-500', 'bg-yellow-400');
+                        btn.classList.replace('text-white', 'text-gray-800');
+                    }
+                });
+            }
+
 
             // --- LOGIK PENGESAHAN (BARU) ---
             const submitButton = document.getElementById('submit-ppd-button');
@@ -960,6 +1113,92 @@
                     }
                 });
             }
+
+
+            // --- FUNGSI BARU UNTUK CATATAN ---
+            
+            // Fungsi untuk mengemas kini warna teks berdasarkan input catatan
+            window.updateRedText = function(inputEl) {
+                if (!inputEl) return;
+                const row = inputEl.closest('tr');
+                if (!row) return;
+                // Sasarkan sel kedua (Senarai Prasarana)
+                const itemCell = row.querySelector('td:nth-child(2)');
+                if (itemCell) {
+                    if (inputEl.value.trim() !== '') {
+                        itemCell.classList.add('text-red-600', 'font-bold');
+                    } else {
+                        itemCell.classList.remove('text-red-600', 'font-bold');
+                    }
+                }
+            };
+
+            // Fungsi untuk memaparkan data catatan di halaman 'Keseluruhan'
+            // FUNGSI INI DIKEMAS KINI UNTUK MENGAMBIL SEMUA INPUT
+            window.populateKeseluruhan = function() {
+                // Fungsi pembantu untuk menyalin data dari satu jadual ke jadual lain
+                const syncTable = (sourceTableId, targetBodyId) => {
+                    const sourceTable = document.getElementById(sourceTableId);
+                    const displayTableBody = document.getElementById(targetBodyId);
+                    
+                    if (!sourceTable || !displayTableBody) {
+                        // Jangan papar ralat jika tiada data (cth: Aspek A8)
+                        if (sourceTableId === 'aspek8-table' && displayTableBody.querySelectorAll('tr').length === 0) {
+                            return; 
+                        }
+                        console.warn(`Elemen sumber atau sasaran tiada untuk: ${sourceTableId} -> ${targetBodyId}`);
+                        return;
+                    }
+
+                    const sourceRows = sourceTable.querySelectorAll('tbody tr');
+                    const displayRows = displayTableBody.querySelectorAll('tr');
+
+                    // Jika A8 (tiada data), teruskan
+                    if (sourceTableId === 'aspek8-table') return;
+                    
+                    sourceRows.forEach((sourceRow, rowIndex) => {
+                        if (!displayRows[rowIndex]) return; // Pastikan baris paparan wujud
+
+                        const displayRow = displayRows[rowIndex];
+                        const sourceInputs = sourceRow.querySelectorAll('input');
+                        const displayItemCell = displayRow.querySelector('td:nth-child(2)'); // Untuk teks merah
+                        let catatanValue = '';
+
+                        sourceInputs.forEach(input => {
+                            let colType = input.getAttribute('data-col'); // cth: 'ada', 'fungsi'
+                            if (input.classList.contains('catatan-input')) {
+                                colType = 'catatan';
+                                catatanValue = input.value;
+                            }
+
+                            // Cari sel paparan yang sepadan
+                            const displayCell = displayRow.querySelector(`[data-col-display="${colType}"]`);
+                            if (displayCell) {
+                                displayCell.textContent = input.value;
+                            }
+                        });
+
+                        // Kemas kini logik teks merah pada halaman ringkasan
+                        if (displayItemCell) {
+                            if (catatanValue.trim() !== '') {
+                                displayItemCell.classList.add('text-red-600', 'font-bold');
+                            } else {
+                                displayItemCell.classList.remove('text-red-600', 'font-bold');
+                            }
+                        }
+                    });
+                };
+
+                // Panggil fungsi sync untuk setiap jadual
+                syncTable('aspek4-table', 'keseluruhan-A4-body');
+                syncTable('aspek5-table', 'keseluruhan-A5-body');
+                syncTable('aspek6-table', 'keseluruhan-A6-body');
+                syncTable('aspek7-table', 'keseluruhan-A7-body');
+                syncTable('aspek8-table', 'keseluruhan-A8-body');
+                syncTable('aspek9-table-1', 'keseluruhan-A9-1-body');
+                syncTable('aspek9-table-2', 'keseluruhan-A9-2-body');
+                syncTable('aspek9-table-3', 'keseluruhan-A9-3-body');
+            };
 
 
             // --- LOGIK NAVIGASI LAMA (Kini hanya berfungsi selepas log masuk) ---
